@@ -2,3 +2,5 @@ Django==3.0.5
 django-crispy-forms==1.8.1
 django-filter==2.3.0
 Pillow==7.1.1
+csvImporter==0.1.3.2
+django-csv-importer 0.1.3.5

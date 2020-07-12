@@ -1,0 +1,8 @@
+path {
+  stroke:rgba(33,70,219,1);
+  fill-opacity:0.3;
+  fill:blue;
+}
+path:hover {
+  fill:white;
+}
