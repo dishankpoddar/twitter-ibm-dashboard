@@ -9,6 +9,7 @@ class CustomBooleanField(models.IntegerField):
 
 class Tweets(models.Model):
     index = models.IntegerField()
+    batch = models.IntegerField()
     date = models.DateField()
     time = models.TimeField()
     username = models.TextField(max_length=255)

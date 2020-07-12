@@ -14,30 +14,25 @@ def index(request):
     }
     return render(request, 'twitter/index.html',context)
 
+def deleteTweets(request):
+    # batch = Tweets.objects.last().batch
+    # Tweets.objects.filter(batch=batch).delete()
+    return HttpResponse("This script is commented in order to avoid accidental deletes")
+
 def populateTweets(request):
     
+    batch = Tweets.objects.last().batch+1
+    print(batch)
     csvFile = 'twitter/tweets_annotated_lite.csv'
-    
-    try :
-        with open(csvFile) as csvFile:
-            reader = csv.DictReader(csvFile)
-            for row in reader:
-                print(row['index'],end=' ')
-                print(row['date'],end=' ')
-                print(row['time'],end=' ')
-                print(row['username'],end=' ')
-                print(row['name'],end=' ')
-                print(row['tweet'],end=' ')
-                print(row['geo'],end=' ')
-                print(row['Positive'],end=' ')
-                print(row['Happy'],end=' ')
-                print(row['Relief'],end=' ')
-                print(row['Neutral'],end=' ')
-                print(row['Anxious'],end=' ')
-                print(row['Sad'],end=' ')
-                print(row['Negative'],end=' ')
+    numberOfRows = 0
 
+    with open(csvFile, encoding='utf8') as csvFile:
+        reader = csv.DictReader(csvFile)
+        for row in reader:
+            try :
+                numberOfRows+=1
                 p = Tweets(index = row['index'],
+                            batch = batch,
                             date = row['date'],
                             time = row['time'],
                             username = row['username'],
@@ -53,9 +48,10 @@ def populateTweets(request):
                             negative = (True if row['Negative']=='1' else False))
                 p.save()
 
-    except Exception as e:
-        print(e)
-        # log Error
-
-    return HttpResponse("Ho gayaaaaa")
+            except Exception as e:
+                print(e)
+                # log Error
     
+    numberOfTweetsLoaded = Tweets.objects.filter(batch=batch).count()
+
+    return HttpResponse("Batch Number : "+str(batch)+". <br><br>Number of Tweets added successfully :  "+str(numberOfTweetsLoaded)+"/"+str(numberOfRows)+". <br><br>CSV File fetched : '"+str(csvFile.name)+"'")
