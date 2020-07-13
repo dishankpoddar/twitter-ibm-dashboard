@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [    
     path('', views.index, name='index'),
-    path('line/', views.index, name='line'),
-    path('pie/', views.index, name='pie'),
+    path('line/', views.line, name='line'),
+    path('pie/', views.pie, name='pie'),
     path('load/',views.populateTweets),
     path('delete/',views.deleteTweets)
 ]
