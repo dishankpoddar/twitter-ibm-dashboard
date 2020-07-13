@@ -8,14 +8,24 @@ from .models import Tweets
 
 import csv
 
-def index(request):
-    return render(request, 'twitter/index2.html')
+def bar(request):
+    context = {
+        'bar' : True,
+        'wordcloud' :settings.MEDIA_ROOT+"/word.png"
+    }
+    return render(request, 'twitter/bar.html',context)
 
 def line(request):
-    return render(request, 'twitter/line.html')
+    context = {
+        'line' : True
+    }
+    return render(request, 'twitter/line.html',context)
 
 def pie(request):
-    return render(request, 'twitter/pie.html')
+    context = {
+        'pie' : True
+    }
+    return render(request, 'twitter/pie.html',context)
 
 def deleteTweets(request):
     # batch = Tweets.objects.last().batch

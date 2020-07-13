@@ -1,4 +1,5 @@
 {% load static %}
+{% load media %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -32,11 +33,7 @@
         /* margin:0.75rem; */
         padding-bottom:3rem;
         margin-top:2rem;
-<<<<<<< HEAD
-        margin-bottom: 0.5rem;
-=======
         margin-bottom:0.5rem;
->>>>>>> b78a5437c37800a6823967ce4ff88c3a3f42eb16
       }
       .inner-head {
         background-color:#010232;
@@ -143,14 +140,26 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
+            {% if bar %}
             <li class="nav-item active">
-              <a class="nav-link" href="#">Bar Graph</a>
-            </li>
+            {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="#">Line Graph</a>
+            {% endif %}
+              <a class="nav-link" href="{% url 'index' %}">Bar Graph</a>
             </li>
+            {% if line %}
+            <li class="nav-item active">
+            {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="#">Pie Chart</a>
+            {% endif %}
+              <a class="nav-link" href="{% url 'line' %}">Line Graph</a>
+            </li>
+            {% if pie %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+              <a class="nav-link" href="{% url 'pie' %}">Pie Chart</a>
             </li>
           </ul>
         </div>
@@ -166,7 +175,7 @@
               <div class="b-style-1">
                 <div class="inner-head"><h5>Word Cloud</h5></div>
                 <br>
-                <center> <img src="media/word.png" alt="" height="180"> </center>
+                <center> <img src="{% media 'wordcloud' %}" alt="" height="180"> </center>
                 <br>
               </div>
             </div>
@@ -303,190 +312,8 @@
   <script src="{% static 'twitter/vanilla-calendar.js' %}"> </script>
 
 
-  <script>
-      let pastDates = true, availableDates = false, availableWeekDays = true;
-      let calendar = new VanillaCalendar({
-          selector: "#myCalendar",
-          months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-          shortWeekday: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-          onSelect: (data, elem) => {
-              // console.log(data.date);
-              changeDate(data.date)
-          }
-          ///// Start editing from here
-          // This function here onSelect takes the date
-          // Call the API with fetch() method
-      })
+{% block content %}{% endblock %}
 
 
-  </script>
-
-
-  <script type="text/javascript" src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <script type="text/javascript">
-
-////// DATASETS ////////////////////
-  const dataset_1_TendingTopics = [{
-    label:'Positive Tweets',
-    backgroundColor:'Orange',
-    data:[50,60,70,30,40]
-    },
-    {
-      label:'Negative Tweets',
-      backgroundColor:'Red',
-      data:[100,100,100,100,100]
-    }
-];
-
-const dataset_2_PositiveNegative = [
-  {
-    label:'Negative Tweets',
-    backgroundColor:'#9300ff',
-    data:[80,70,90,80,70,90,80,70,90,80,70,90]
-  },
-  {
-    label:'Positive Tweets',
-    backgroundColor:'#40acff',
-    data:[20,30,10,20,30,10,20,30,10,20,30,10]
-  }
-];
-
-const dataset_3_Emotions = [
-  {
-    label:'Relief',
-    backgroundColor:'#dbff34',
-    data:[40,70,90,80]
-  },
-  {
-    label:'Anxious',
-    backgroundColor:'#d90ee7',
-    data:[60,70,90,80]
-  },
-  {
-    label:'Happy',
-    backgroundColor:'#00ff00',
-    data:[80,70,90,80]
-  },
-  {
-    label:'Sad',
-    backgroundColor:'#f20002',
-    data:[50,30,40,20]
-  }
-];
-//////// Do not touch after here //////////////////////////////
-////////////////////////GLOBAL CONFIGS ///////////////////////////
-  const ticks = {fontColor:"white"};
-  const legend = {display:true,position:'bottom',labels:{fontColor:'white'}};
-///////////////GRAPH STARTS ///////////////////////////////////////////
-  const labels_1 = ['Quarantine','Migrant','Final year','Exams','Hospital'];
-  new Chart(document.getElementById("tending_topics_twitter"), {
-  type: 'horizontalBar',
-  data: {
-    labels: labels_1,
-    datasets: dataset_1_TendingTopics
-  },
-  options: {
-    legend: legend,
-    title: {display: false},
-    scales: {
-            yAxes: [
-              {
-                stacked: true,
-                ticks: ticks,
-                gridLines:{display:false}
-              }
-            ],
-            xAxes: [{
-                stacked : true,
-                ticks: ticks,
-                gridLines:{display:false}
-            }]
-        }
-  }
-});
-new Chart(document.getElementById("positive-negative"), {
-    type: 'bar',
-    data: {
-      labels: [1,2,3,4,5,6,7,8,9,10,11,12],
-      datasets: dataset_2_PositiveNegative
-    },
-    options: {
-      barRoundness: 1,
-      legend: legend,
-      title: { display: false },
-      scales: {
-              yAxes: [
-                {
-                  ticks: ticks,
-                  stacked:true,
-                  gridLines: {color:"blue"}
-                }
-            ],
-              xAxes: [
-                {
-                  ticks: ticks,
-                  stacked:true,
-                  gridLines:{display:false}
-              }
-            ]
-          }
-    }
-});
-new Chart(document.getElementById("emotions"), {
-    type: 'bar',
-    data: {
-      labels: [1,2,3,4],
-      datasets: dataset_3_Emotions
-    },
-    options: {
-      legend: legend,
-      title: { display : false },
-      scales: {
-              yAxes: [{
-                beginAtZero: true,
-                gridLines: { color: "Blue" },
-                  ticks: {min:0,fontColor:"white"}
-              }],
-              xAxes: [{
-                beginAtZero: true,
-                gridLines: { display: false },
-                  ticks: ticks
-              }]
-          }
-    }
-});
-
-  </script>
-
-  <script>
-    alert();
-  var date = Date();
-  filters = {'date':date,'word':'lockdown','location':'Mumbai'}
-
-  alert(filters.date+"\n"+filters.word+"\n"+filters.location);
-  
-  function form(input) {
-    var ip = document.getElementById('input-word');
-    ip.value = input;
-  }
-  function impDate(str) {
-    var impDate = new Date(str);
-    alert(impDate);
-
-  }
-  function changeDate(date) {
-    alert(date);
-  }
-  function changeLoc(){
-    alert("Hey");
-  }
-  function changeWord(){
-    word = document.getElementById('input-word').value;
-    alert(word);
-  }
-  </script>
-  <script>
-
-  </script>
-  </body>
+</body>
 </html>

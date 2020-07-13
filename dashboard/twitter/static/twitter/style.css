@@ -1,8 +1,14 @@
 path {
-  stroke:rgba(33,70,219,1);
+  stroke:#40acff;
   fill-opacity:0.3;
   fill:blue;
+  cursor: pointer;
 }
 path:hover {
-  fill:white;
+  fill:#40acff;
+  fill-opacity:0.6;
+}
+#svg2 {
+  box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
+
 }
