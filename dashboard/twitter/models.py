@@ -23,3 +23,6 @@ class Tweets(models.Model):
     anxious = models.BooleanField(default=False)
     sad = models.BooleanField(default=False)
     negative = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.batch}_{self.index}'

@@ -9,6 +9,10 @@ from .models import Tweets
 import csv
 
 def bar(request):
+    all_tweets = Tweets.objects.all()
+    if(request.method == 'POST'):
+        print('yay')
+    
     context = {
         'bar' : True,
         'wordcloud' :settings.MEDIA_ROOT+"/word.png"
