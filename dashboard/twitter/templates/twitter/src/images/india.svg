@@ -160,13 +160,9 @@
 
      <script>
          <![CDATA[
-           var x = document.getElementsByTagName('path');
-           console.log(x[0]);
-           for(var i = 0 ; i< x.length ; i++) {
-           x[0].addEventListener("click", function(){
-           console.log(x[i]);
-           })
-           }
+           var x = document.getElementsById('IN-UP');
+           x.onclick = function(){};
+           });
          ]]>
        </script>
 
