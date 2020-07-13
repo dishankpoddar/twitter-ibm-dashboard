@@ -9,10 +9,13 @@ from .models import Tweets
 import csv
 
 def index(request):
-    context = {
-        'india_map': settings.MEDIA_ROOT+"/india.svg"
-    }
-    return render(request, 'twitter/index.html',context)
+    return render(request, 'twitter/index2.html')
+
+def line(request):
+    return render(request, 'twitter/line.html')
+
+def pie(request):
+    return render(request, 'twitter/pie.html')
 
 def deleteTweets(request):
     # batch = Tweets.objects.last().batch
