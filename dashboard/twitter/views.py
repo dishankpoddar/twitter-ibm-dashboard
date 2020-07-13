@@ -6,13 +6,44 @@ from django.db.models import Avg, Count, F, Aggregate
 from django.conf import settings 
 from .models import Tweets
 
+from wordcloud import WordCloud, STOPWORDS 
+import matplotlib.pyplot as plt
+
 import csv
+
+def word_count(my_string,stopwords):
+    counts = dict()
+    words = my_string.split()
+    for word in words:
+        if word not in stopwords:
+            if word in counts:
+                counts[word] += 1
+            else:
+                counts[word] = 1
+    counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+    return counts
 
 def bar(request):
     all_tweets = Tweets.objects.all()
     if(request.method == 'POST'):
         print('yay')
-    
+    tweet_cloud = ""
+    for tweet in all_tweets:
+        tweet_cloud += " "+tweet.tweet
+    stopwords = STOPWORDS|set(['covid','corona','lockdown','quarantine'])|set(["<NATURE>","<FOOD>","<SPACE-TIME>","<ACTIVITIES>","<OBJECTS>","<SYMBOLS>","<FLAGS>","<PERSON>","<HAPPY>","<LAUGH>","<LOVE>","<SARCASM>","<DOUBT>","<UNWELL>","<SAD>","<PISSED>","<SLEEPY>","<NEUTRAL>","<SHOCK>","<PATRIOT>"]) 
+    wordcloud = WordCloud(width = 720, height = 360, 
+                background_color ='#010232', 
+                stopwords = stopwords, 
+                min_font_size = 10).generate(tweet_cloud) 
+    plt.figure(figsize = (16, 8), facecolor = None) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+    plt.savefig('./twitter/static/twitter/word.png')
+
+    top_5 = word_count(tweet_cloud,stopwords)[:5]
+    print(top_5)
+
     context = {
         'bar' : True,
         'wordcloud' :settings.MEDIA_ROOT+"/word.png"
