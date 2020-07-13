@@ -32,6 +32,7 @@
         /* margin:0.75rem; */
         padding-bottom:3rem;
         margin-top:2rem;
+        margin-bottom:0.5rem;
       }
       .inner-head {
         background-color:#010232;
@@ -194,7 +195,7 @@
                 <div class="inner-head"><h5>Map Of India</h5></div>
                 <div class="svg-map">
                   <center>
-                    <object data="{% static 'twitter/india.svg' %}" height="500" style="width:100%"></object>
+                    <object data="{% static 'twitter/india.svg' %}" height="500" style="width:100%" onclick="alert('click!')"></object>
                   </center>
 
                 </div>
@@ -217,16 +218,16 @@
                       </div>
                     </div>
                   </div>
-                  <div class="box-left imp-box" onclick=impDate('2020/03/24')>
+                  <div class="box-left imp-box" onclick="impDate('April 24, 2020')">
                     <p>Lockdown Announced  <span class="box-circle">24</span> </p>
 
                   </div>
-                  <div class="box-mid imp-box">
-                    <p>Lockdown Extended  <span class="box-circle" onclick=impDate('2020/03/31')>31</span> </p>
+                  <div class="box-mid imp-box"  onclick="impDate('April 31, 2020')">
+                    <p>Lockdown Extended  <span class="box-circle">31</span> </p>
                   </div>
 
-                  <div class="box-right imp-box">
-                    <p>Lockdown Extended  <span class="box-circle" onclick=impDate('2020/04/15')>15</span> </p>
+                  <div class="box-right imp-box" onclick="impDate('April 15, 2020')">
+                    <p>Lockdown Extended  <span class="box-circle" >15</span> </p>
                   </div>
                 </div>
               </div>
@@ -260,28 +261,27 @@
               <div class="b-style-1">
                 <div class="inner-head"><h5> Word Search  </h5></div>
                   <div class="container word-search-box" style="margin-top:2rem; margin-bottom:5.5rem;">
-                    <form action="#" method="post">
+                    <!-- <form action="#"> -->
                       <div class="form-group">
                         <div class="form-row">
                           <div class="col-10">
                             <input type="text" id="input-word" class="form-control" placeholder="Enter A Word">
                           </div>
                           <div class="col-2">
-                            <button type="submit" class="btn" style="background-color:transparent; color:white" name="submit"> <i class="large material-icons">search</i> </button>
+                            <button onclick="changeWord()" class="btn" style="background-color:transparent; color:white"> <i class="large material-icons">search</i> </button>
                           </div>
                         </div>
                         <small class="form-text text-muted">Enter Keywords Like Lockdown,Quarantine,Covid-19.</small>
                       </div>
-                    </form>
                     <div class="badges">
-                      <span class="badge badge-pill badge-primary" onclick=form('Lockdown')>#Lockdown</span>
-                      <span class="badge badge-pill badge-secondary" onclick=form('Coronavirus')>#Coronavirus</span>
-                      <span class="badge badge-pill badge-success" onclick=form('covid-19')>#Covid-19</span>
-                      <span class="badge badge-pill badge-danger" onclick=form('Extended')>#Extended</span>
-                      <span class="badge badge-pill badge-warning" onclick=form('Migrants')>#Migrants</span>
-                      <span class="badge badge-pill badge-info" onclick=form('Epass')>#Epass</span>
-                      <span class="badge badge-pill badge-light" onclick=form('Unemployement')>#Unemployement</span>
-                      <span class="badge badge-pill badge-dark" onclick=form('Cancel_Exam')>#Cancel Exams</span>
+                      <span class="badge badge-pill badge-primary" onclick="form('Lockdown')">#Lockdown</span>
+                      <span class="badge badge-pill badge-secondary" onclick="form('Coronavirus')">#Coronavirus</span>
+                      <span class="badge badge-pill badge-success" onclick="form('covid-19')">#Covid-19</span>
+                      <span class="badge badge-pill badge-danger" onclick="form('Extended')">#Extended</span>
+                      <span class="badge badge-pill badge-warning" onclick="form('Migrants')">#Migrants</span>
+                      <span class="badge badge-pill badge-info" onclick="form('Epass')">#Epass</span>
+                      <span class="badge badge-pill badge-light" onclick="form('Unemployement')">#Unemployement</span>
+                      <span class="badge badge-pill badge-dark" onclick="form('Cancel_Exam')">#Cancel Exams</span>
                     </div>
                   </div>
               </div>
@@ -306,7 +306,8 @@
           months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
           shortWeekday: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
           onSelect: (data, elem) => {
-              console.log(data, elem)
+              // console.log(data.date);
+              changeDate(data.date)
           }
           ///// Start editing from here
           // This function here onSelect takes the date
@@ -454,13 +455,34 @@ new Chart(document.getElementById("emotions"), {
   </script>
 
   <script>
+    alert();
+  var date = Date();
+  filters = {'date':date,'word':'lockdown','location':'Mumbai'}
+
+  alert(filters.date+"\n"+filters.word+"\n"+filters.location);
+  
   function form(input) {
     var ip = document.getElementById('input-word');
     ip.value = input;
   }
-  function impDate(date) {
-    console.log(date);
+  function impDate(str) {
+    var impDate = new Date(str);
+    alert(impDate);
+
   }
+  function changeDate(date) {
+    alert(date);
+  }
+  function changeLoc(){
+    alert("Hey");
+  }
+  function changeWord(){
+    word = document.getElementById('input-word').value;
+    alert(word);
+  }
+  </script>
+  <script>
+
   </script>
   </body>
 </html>
