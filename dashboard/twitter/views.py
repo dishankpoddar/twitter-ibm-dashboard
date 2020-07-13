@@ -2,9 +2,14 @@ from django.shortcuts import render,HttpResponse, redirect,get_object_or_404
 from django.views.generic import (View,TemplateView,CreateView, DeleteView, DetailView, 
                                     ListView,UpdateView,FormView)
 from django.db import transaction
-from django.db.models import Avg, Count, F, Aggregate
+from django.db.models import Avg, Count, F, Aggregate,Q
 from django.conf import settings 
 from .models import Tweets
+
+from functools import reduce
+import operator
+
+
 
 from wordcloud import WordCloud, STOPWORDS 
 import matplotlib.pyplot as plt
@@ -41,8 +46,15 @@ def bar(request):
     plt.tight_layout(pad = 0) 
     plt.savefig('./twitter/static/twitter/word.png')
 
-    top_5 = word_count(tweet_cloud,stopwords)[:5]
-    print(top_5)
+    pairs = word_count(tweet_cloud,stopwords)[:5]
+    top_5 = [pair[0] for pair in pairs]
+    top_5_tweets = Tweets.objects.filter(reduce(operator.and_, (Q(tweet__contains=x) for x in top_5)))
+    print(top_5.count)
+    neg_top_5 = top_5_tweets.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
+    pos_top_5 = top_5_tweets.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
+    print(neg_top_5,pos_top_5)
+    
+
 
     context = {
         'bar' : True,
