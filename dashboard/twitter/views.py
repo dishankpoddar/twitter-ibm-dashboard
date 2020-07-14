@@ -42,7 +42,7 @@ def bar(request):
 
     
     start = time.time()
-    all_tweets = Tweets.objects.all()
+    get_tweets = Tweets.objects.all()
     filter_date = date.today()
     if(request.method == 'POST'):
         print("Post")
@@ -56,7 +56,7 @@ def bar(request):
           filters_Global['loc']=filters_Default['loc']
     
     tweet_cloud = ""
-    # for tweet in all_tweets:
+    # for tweet in get_tweets:
     #     tweet_cloud += " "+tweet.tweet
     # stopwords = STOPWORDS|set(['covid','corona','lockdown','quarantine'])|set(["<NATURE>","<FOOD>","<SPACE-TIME>","<ACTIVITIES>","<OBJECTS>","<SYMBOLS>","<FLAGS>","<PERSON>","<HAPPY>","<LAUGH>","<LOVE>","<SARCASM>","<DOUBT>","<UNWELL>","<SAD>","<PISSED>","<SLEEPY>","<NEUTRAL>","<SHOCK>","<PATRIOT>"]) 
     
@@ -73,20 +73,20 @@ def bar(request):
     # top_5 = word_count(tweet_cloud,stopwords)[:5]
     # top_5 = [[top[0]] for top in top_5]
     # for top in top_5:
-    #     top_tweet = Tweets.objects.filter(tweet__contains=top[0])
+    #     top_tweet = get_tweets.filter(tweet__contains=top[0])
     #     neg_top_5 = top_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
     #     pos_top_5 = top_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
     #     top.extend([neg_top_5,pos_top_5])
     #     # print(top)
     
     # filter_date = datetime.strptime("2020-06-12", "%Y-%m-%d").date()
-    # #print(Tweets.objects.filter(date=filter_date))
+    # #print(get_tweets.filter(date=filter_date))
 
     # pos_neg_filter_date = filter_date
     # pos_neg_days = []
     # for i in range(7):
     #     pos_neg_days.append([pos_neg_filter_date])
-    #     date_tweet = Tweets.objects.filter(date=pos_neg_filter_date)
+    #     date_tweet = get_tweets.filter(date=pos_neg_filter_date)
     #     neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
     #     pos_date_tweet = date_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
     #     try:
@@ -103,7 +103,7 @@ def bar(request):
     # emotion_days = []
     # for i in range(7):
     #     emotion_days.append([emotion_filter_date])
-    #     date_tweet = Tweets.objects.filter(date=emotion_filter_date)
+    #     date_tweet = get_tweets.filter(date=emotion_filter_date)
     #     neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
     #     sad_date_tweet = date_tweet.filter(Q(sad=True)).count()
     #     anx_date_tweet = date_tweet.filter(Q(anxious=True)).count()

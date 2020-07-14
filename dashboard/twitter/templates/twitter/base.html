@@ -16,7 +16,7 @@
         background-color:#010232;
         background-repeat: no-repeat;
         background-size: contain;
-        margin: 0.5rem;
+        margin: 2rem;
         padding:rem;
         align-content: center;
         margin-top:2rem;
@@ -210,13 +210,13 @@
 
                 </div>
                 <div class="legend-map">
-                  <img src="{% static 'twitter/india-legend.png' %}" alt="" height="70" width="150">
+                  <img src="{% static 'twitter/india-legend2.png' %}" alt="" height="75" width="150">
                 </div>
               </div>
             </div>
             <div class="row">
               <!-- IMP DATES -->
-              <div class="b-style-1" style="border-radius:10px">
+              <div class="b-style-1">
                 <div class="inner-head"><h5>Important Dates</h5></div>
                 <div class="imp-dates">
                   <!--
@@ -308,10 +308,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="{% static 'twitter/vanilla-calendar.js' %}"> </script>
   
+<script>
+  let pastDates = true, availableDates = false, availableWeekDays = true;
+  let calendar = new VanillaCalendar({
+      selector: "#myCalendar",
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      shortWeekday: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      onSelect: (data, elem) => {
+          // console.log(data.date);
+          changeDate(data.date)
+      }
+      ///// Start editing from here
+      // This function here onSelect takes the date
+      // Call the API with fetch() method
+  })
 
-{% block content %}{% endblock %}
+
+</script>
+
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="{% static 'twitter/everything.js' %}"></script>
+<script type="text/javascript" src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+{% block content %}{% endblock %}
 </body>
 </html>
