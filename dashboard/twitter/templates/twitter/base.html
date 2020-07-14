@@ -114,7 +114,7 @@
   </head>
 
   <body>
-    <form action = "" method = "POST" name="theForm"> 
+    <form style="display:none" action = "" method = "POST" name="theForm"> 
       {% csrf_token %}  
       <input  id="date" type="text" value="{{date}}" >
       <input  id="loc" type="text" value="{{loc}}" >
@@ -275,7 +275,7 @@
                       <div class="form-group">
                         <div class="form-row">
                           <div class="col-10">
-                            <input type="text" id="input-word" class="form-control" placeholder="Enter A Word">
+                            <input type="text" id="input-word" class="form-control" placeholder="Enter A Word" value="{{content}}">
                           </div>
                           <div class="col-2">
                             <button onclick="changeWord()" class="btn" style="background-color:transparent; color:white"> <i class="large material-icons">search</i> </button>
