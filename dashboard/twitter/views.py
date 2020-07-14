@@ -39,14 +39,21 @@ def bar(request):
     filters_date = date.today()
     filters_content = filters_Default['content']
     filters_loc = filters_Default['loc']
+
+    max_color = "blue"
     
     if(request.method == 'POST'):
-        
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
-        
+            if(filters_content!="None"):
+                get_tweets = get_tweets.filter(tweet__contains=filters_content)
+            #if(filters_loc!="None"):
+            #   get_tweets = get_tweets.filter(geo=filters_loc)
+
+
+            print(filters_date,type(filters_content),filters_loc)
         elif(request.POST['reset']=='true'):
             filters_date = filters_Default['date']
             filters_content = filters_Default['content']
@@ -106,6 +113,7 @@ def bar(request):
     emotion_filter_date = filter_date
     emotion_dates = []
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
+    flag = 0
     for _ in range(4):
         emotion_dates.append(emotion_filter_date.day)
         date_tweet = get_tweets.filter(date=emotion_filter_date)
@@ -116,6 +124,16 @@ def bar(request):
         rel_date_tweet.append(date_tweet.filter(Q(relief=True)).count())
         hap_date_tweet.append(date_tweet.filter(Q(happy=True)).count())
         #pos_date_tweet = date_tweet.filter(Q(positive=True)).count()
+        if(flag==0):
+            max_c = max(sad_date_tweet[0],anx_date_tweet[0],rel_date_tweet[0],hap_date_tweet[0])
+            if(max_c==sad_date_tweet[0]):
+                max_color = "red"
+            if(max_c==anx_date_tweet[0]):
+                max_color = "magenta"
+            if(max_c==rel_date_tweet[0]):
+                max_color = "yellow"
+            if(max_c==hap_date_tweet[0]):
+                max_color = "green"
         emotion_filter_date -= timedelta(days=1)
         # print(emotion_days[i])
     emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
@@ -131,21 +149,225 @@ def bar(request):
         'content': filters_content,
         'top_5': top_5,
         'pos_neg': pos_neg,
-        'emotion': emotion
+        'emotion': emotion,
+        'max_color': max_color,
     }
     #return HttpResponse(f"Runtime of the query is {end - start}")
     return render(request, 'twitter/bar.html',context)
 
 def line(request):
+    start = time.time()
+    get_tweets = Tweets.objects.all()
+    
+    filters_date = date.today()
+    filters_content = filters_Default['content']
+    filters_loc = filters_Default['loc']
+
+    max_color = "blue"
+    
+    if(request.method == 'POST'):
+        if(request.POST['reset']=='false'):
+            filters_date = request.POST['date']
+            filters_content = request.POST['content']
+            filters_loc = request.POST['loc']
+            if(filters_content!="None"):
+                get_tweets = get_tweets.filter(tweet__contains=filters_content)
+            #if(filters_loc!="None"):
+            #   get_tweets = get_tweets.filter(geo=filters_loc)
+
+
+            print(filters_date,type(filters_content),filters_loc)
+        elif(request.POST['reset']=='true'):
+            filters_date = filters_Default['date']
+            filters_content = filters_Default['content']
+            filters_loc = filters_Default['loc']
+        
+    tweet_cloud = ""
+    for tweet in get_tweets:
+        tweet_cloud += " "+tweet.tweet
+    stopwords = STOPWORDS|set(['covid','corona','lockdown','quarantine'])|set(["<NATURE>","<FOOD>","<SPACE-TIME>","<ACTIVITIES>","<OBJECTS>","<SYMBOLS>","<FLAGS>","<PERSON>","<HAPPY>","<LAUGH>","<LOVE>","<SARCASM>","<DOUBT>","<UNWELL>","<SAD>","<PISSED>","<SLEEPY>","<NEUTRAL>","<SHOCK>","<PATRIOT>"]) 
+    
+    wordcloud = WordCloud(width = 720, height = 360, 
+                background_color ='#010232', 
+                stopwords = stopwords, 
+                min_font_size = 10).generate(tweet_cloud) 
+    plt.figure(figsize = (16, 8), facecolor = None) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+    plt.savefig('./twitter/static/twitter/word.png')
+
+    top_5 = word_count(tweet_cloud,stopwords)[:5]
+    top_5 = [top[0] for top in top_5]
+    neg_top_5,pos_top_5=[],[]
+    for top in top_5:
+        top_tweet = get_tweets.filter(tweet__contains=top[0])
+        neg_top_5.append(top_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count())
+        pos_top_5.append(top_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count())
+        # print(top)
+    top_5 = {'terms':top_5,'positive':pos_top_5,'negative':neg_top_5}
+
+    #print(top_5)
+
+    given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
+    filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
+    #print(get_tweets.filter(date=filter_date))
+
+    pos_neg_filter_date = filter_date
+    pos_neg_dates = []
+    neg_perc = []
+    pos_perc = []
+    for _ in range(7):
+        pos_neg_dates.append(pos_neg_filter_date.day)
+        date_tweet = get_tweets.filter(date=pos_neg_filter_date)
+        neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
+        pos_date_tweet = date_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
+        try:
+            neg_perc.append(neg_date_tweet/(neg_date_tweet+pos_date_tweet))
+            pos_perc.append(pos_date_tweet/(neg_date_tweet+pos_date_tweet))
+        except:
+            neg_perc.append(0)
+            pos_perc.append(0)
+        pos_neg_filter_date -= timedelta(days=1)
+        # print(pos_neg_days[i])
+    pos_neg = {'dates':pos_neg_dates[::-1],'positive':pos_perc[::-1],'negative':neg_perc[::-1]}
+    #print(pos_neg)
+
+    emotion_filter_date = filter_date
+    emotion_dates = []
+    sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
+    flag = 0
+    for _ in range(4):
+        emotion_dates.append(emotion_filter_date.day)
+        date_tweet = get_tweets.filter(date=emotion_filter_date)
+        #neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
+        sad_date_tweet.append(date_tweet.filter(Q(sad=True)).count())
+        anx_date_tweet.append(date_tweet.filter(Q(anxious=True)).count())
+        #neu_date_tweet = date_tweet.filter(Q(neutral=True)).count()
+        rel_date_tweet.append(date_tweet.filter(Q(relief=True)).count())
+        hap_date_tweet.append(date_tweet.filter(Q(happy=True)).count())
+        #pos_date_tweet = date_tweet.filter(Q(positive=True)).count()
+        if(flag==0):
+            max_c = max(sad_date_tweet[0],anx_date_tweet[0],rel_date_tweet[0],hap_date_tweet[0])
+            if(max_c==sad_date_tweet[0]):
+                max_color = "red"
+            if(max_c==anx_date_tweet[0]):
+                max_color = "magenta"
+            if(max_c==rel_date_tweet[0]):
+                max_color = "yellow"
+            if(max_c==hap_date_tweet[0]):
+                max_color = "green"
+        emotion_filter_date -= timedelta(days=1)
+        # print(emotion_days[i])
+    emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
+    #print(emotion)
+
+    end = time.time()
+	
     context = {
-        'line' : True
+        'line' : True,
+        'wordcloud' :settings.MEDIA_ROOT+"/word.png",
+        'date': filters_date,
+        'loc': filters_loc,
+        'content': filters_content,
+        'top_5': top_5,
+        'pos_neg': pos_neg,
+        'emotion': emotion,
+        'max_color': max_color,
     }
+    #return HttpResponse(f"Runtime of the query is {end - start}")
     return render(request, 'twitter/line.html',context)
 
 def pie(request):
+    start = time.time()
+    get_tweets = Tweets.objects.all()
+    
+    filters_date = date.today()
+    filters_content = filters_Default['content']
+    filters_loc = filters_Default['loc']
+
+    max_color = "blue"
+    
+    if(request.method == 'POST'):
+        if(request.POST['reset']=='false'):
+            filters_date = request.POST['date']
+            filters_content = request.POST['content']
+            filters_loc = request.POST['loc']
+            if(filters_content!="None"):
+                get_tweets = get_tweets.filter(tweet__contains=filters_content)
+            #if(filters_loc!="None"):
+            #   get_tweets = get_tweets.filter(geo=filters_loc)
+
+
+            print(filters_date,type(filters_content),filters_loc)
+        elif(request.POST['reset']=='true'):
+            filters_date = filters_Default['date']
+            filters_content = filters_Default['content']
+            filters_loc = filters_Default['loc']
+        
+    tweet_cloud = ""
+    for tweet in get_tweets:
+        tweet_cloud += " "+tweet.tweet
+    stopwords = STOPWORDS|set(['covid','corona','lockdown','quarantine'])|set(["<NATURE>","<FOOD>","<SPACE-TIME>","<ACTIVITIES>","<OBJECTS>","<SYMBOLS>","<FLAGS>","<PERSON>","<HAPPY>","<LAUGH>","<LOVE>","<SARCASM>","<DOUBT>","<UNWELL>","<SAD>","<PISSED>","<SLEEPY>","<NEUTRAL>","<SHOCK>","<PATRIOT>"]) 
+    
+    wordcloud = WordCloud(width = 720, height = 360, 
+                background_color ='#010232', 
+                stopwords = stopwords, 
+                min_font_size = 10).generate(tweet_cloud) 
+    plt.figure(figsize = (16, 8), facecolor = None) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+    plt.savefig('./twitter/static/twitter/word.png')
+
+    top_5 = word_count(tweet_cloud,stopwords)[:5]
+    top_5 = [top[0] for top in top_5]
+    count_top_5=[]
+    for top in top_5:
+        count_top_5.append(get_tweets.filter(tweet__contains=top[0]).count())
+    top_5 = {'terms':top_5,'count':count_top_5}
+
+    #print(top_5)
+
+    given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
+    filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
+    #print(get_tweets.filter(date=filter_date))
+
+    emotion_filter_date = filter_date
+    sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet,pos_date_tweet,neg_date_tweet=0,0,0,0,0,0
+    date_tweet = get_tweets.filter(date=emotion_filter_date)
+    neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
+    sad_date_tweet = date_tweet.filter(Q(sad=True)).count()
+    anx_date_tweet = date_tweet.filter(Q(anxious=True)).count()
+    #neu_date_tweet = date_tweet.filter(Q(neutral=True)).count()
+    rel_date_tweet = date_tweet.filter(Q(relief=True)).count()
+    hap_date_tweet = date_tweet.filter(Q(happy=True)).count()
+    pos_date_tweet = date_tweet.filter(Q(positive=True)).count()
+    max_c = max(sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet)
+    if(max_c==sad_date_tweet):
+        max_color = "red"
+    if(max_c==anx_date_tweet):
+        max_color = "magenta"
+    if(max_c==rel_date_tweet):
+        max_color = "yellow"
+    if(max_c==hap_date_tweet):
+        max_color = "green"
+    emotion = {'sad':sad_date_tweet,'anxious':anx_date_tweet,'relief':rel_date_tweet,'happy':hap_date_tweet,'positive':pos_date_tweet,'negative':neg_date_tweet}
+    #print(emotion)
+
+    end = time.time()
+	
     context = {
-        'pie' : True
+        'pie' : True,
+        'wordcloud' :settings.MEDIA_ROOT+"/word.png",
+        'date': filters_date,
+        'loc': filters_loc,
+        'content': filters_content,
+        'top_5': top_5,
+        'emotion': emotion,
+        'max_color': max_color,
     }
+    #return HttpResponse(f"Runtime of the query is {end - start}")
     return render(request, 'twitter/pie.html',context)
 
 def deleteTweets(request):

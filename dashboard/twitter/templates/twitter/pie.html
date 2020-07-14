@@ -7,7 +7,7 @@
   const dataset_1_TendingTopics = [{
     label:'No of Tweets',
     backgroundColor:["Yellow", "Pink","Aqua","Blue","Green"],
-    data:[50,60,70,30,40],
+    data:{{top_5.count}},
     borderWidth:0
     }
 ];
@@ -16,7 +16,7 @@ const dataset_2_PositiveNegative = [
   {
     label:'No of Tweets',
     backgroundColor:['Yellow','Indigo'],
-    data:[500,1000],
+    data:[{{emotion.positive}},{{emotion.negative}}],
     borderWidth:0
   }
 ];
@@ -25,7 +25,7 @@ const dataset_3_Emotions = [
   {
     label:'No of Tweets',
     backgroundColor:['Yellow','Indigo','White','Red'],
-    data:[500,1000,700,300],
+    data:[{{emotion.happy}},{{emotion.sad}},{{emotion.anxious}},{{emotion.relieg}}],
     borderWidth:0
   }
 ];
@@ -34,7 +34,10 @@ const dataset_3_Emotions = [
   const ticks = {fontColor:"white"};
   const legend = {display:true,position:'bottom',labels:{fontColor:'white'}};
 ///////////////GRAPH STARTS ///////////////////////////////////////////
-  const labels_1 = ['Quarantine','Migrant','Final year','Exams','Hospital'];
+let labels_1 = [];
+{% for term in top_5.terms %}
+ labels_1.push('{{term}}');
+{% endfor %}
   new Chart(document.getElementById("tending_topics_twitter"), {
   type: 'pie',
   data: {
@@ -63,7 +66,7 @@ new Chart(document.getElementById("positive-negative"), {
 new Chart(document.getElementById("emotions"), {
     type: 'doughnut',
     data: {
-      labels: ['Happy','sad','Anxious','Relief'],
+      labels: ['Happy','Sad','Anxious','Relief'],
       datasets: dataset_3_Emotions
     },
     options: {
