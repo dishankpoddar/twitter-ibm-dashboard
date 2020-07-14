@@ -25,3 +25,4 @@ function changeWord(){
     document.getElementById('content').value = word;
     document.theForm.submit();
 }
+

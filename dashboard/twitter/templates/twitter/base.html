@@ -227,19 +227,19 @@
                   </div>-->
                   <div class="outer-oval">
                       <div class="inner-oval">
-                          <center><h2 style="margin-top:0.75rem">  <span id="impEventsMonth" style="color:white">APR</span> </h2></center>
+                          <center><h2 style="margin-top:0.75rem">  <span id="eventMonth" style="color:white"></span> </h2></center>
                       </div>
                   </div>
-                  <div class="box-left imp-box" onclick="impDate('April 24, 2020')">
-                    <p>Lockdown  <span class="box-circle">24</span> </p>
+                  <div class="box-left imp-box" id="eventDiv1">
+                    <p><span id="event1"></span><span id="eventDate1" class="box-circle"></span></p>
 
                   </div>
-                  <div class="box-mid imp-box"  onclick="impDate('April 30, 2020')">
-                    <p>Extended  <span class="box-circle">30</span> </p>
+                  <div class="box-mid imp-box"  id="eventDiv3">
+                    <p><span id="event3"></span><span id="eventDate3" class="box-circle"></span></p>
                   </div>
 
-                  <div class="box-right imp-box" onclick="impDate('April 15, 2020')">
-                    <p>Extended  <span class="box-circle" >15</span> </p>
+                  <div class="box-right imp-box" id="eventDiv2">
+                    <p><span id="event2"></span><span id="eventDate2" class="box-circle"></span></p>
                   </div>
                 </div>
               </div>
@@ -308,8 +308,14 @@
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="{% static 'twitter/vanilla-calendar.js' %}"> </script>
   
+  
+
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="{% static 'twitter/everything.js' %}"></script>
+<script type="text/javascript" src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="{% static 'twitter/vanilla-calendar.js' %}"> </script>
 <script>
   let pastDates = true, availableDates = false, availableWeekDays = true;
   let calendar = new VanillaCalendar({
@@ -327,11 +333,17 @@
 
 
 </script>
-
-<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="{% static 'twitter/everything.js' %}"></script>
-<script type="text/javascript" src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+  $("#eventDiv1").click(function(){
+  impDate($("#eventMonth").html()+" "+$("#eventDate1").html()+", 2020");
+});
+$("#eventDiv2").click(function(){
+  impDate($("#eventMonth").html()+" "+$("#eventDate2").html()+", 2020");
+});
+$("#eventDiv3").click(function(){
+  impDate($("#eventMonth").html()+" "+$("#eventDate3").html()+", 2020");
+});
+</script>
 
 {% block content %}{% endblock %}
 </body>
