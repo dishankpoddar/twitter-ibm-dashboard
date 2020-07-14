@@ -155,6 +155,9 @@
             {% endif %}
               <a class="nav-link" href="{% url 'pie' %}">Pie Chart</a>
             </li>
+            <li class="nav-item active" onclick="resetFeatures()" style="float: right;cursor:pointer">
+              <a class="nav-link">Reset</a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -225,7 +228,7 @@
                   </div>-->
                   <div class="outer-oval">
                       <div class="inner-oval">
-                          <center><h2 style="margin-top:-0.75rem">  <span id="month" style="color:white">APR</span> </h2></center>
+                          <center><h2 style="margin-top:-0.75rem">  <span id="impEventsMonth" style="color:white">APR</span> </h2></center>
                       </div>
                   </div>
                   <div class="box-left imp-box" onclick="impDate('April 24, 2020')">

@@ -27,6 +27,8 @@ let VanillaCalendar = (function () {
             availableDates: [],
             date: new Date(document.getElementById('date').value),
             todaysDate: new Date(document.getElementById('date').value),
+            lockdownStarted: new Date('March 23, 2020'),
+            currentDate : new Date(),   
             button_prev: null,
             button_next: null,
             month: null,
@@ -35,6 +37,7 @@ let VanillaCalendar = (function () {
             months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             shortWeekday: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         }
+        opts.currentDate.setHours(0,0,0,0)
         for (let k in options) if (opts.hasOwnProperty(k)) opts[k] = options[k]
         
         let element = document.querySelector(opts.selector)
@@ -80,14 +83,28 @@ let VanillaCalendar = (function () {
             }
             
             if (date.toString() === opts.todaysDate.toString()) {
+                newDayElem.classList.add('vanilla-calendar-date--selected')
+            }
+            
+            if (date.toString() === opts.currentDate.toString()) {
+                
                 newDayElem.classList.add('vanilla-calendar-date--today')
+            }
+            
+            if(date.getTime() > (opts.currentDate).getTime())
+            {
+                newDayElem.classList.replace('vanilla-calendar-date--active','vanilla-calendar-date--disabled')
+            }
+            if(date.getTime() < (opts.lockdownStarted).getTime())
+            {
+                newDayElem.classList.replace('vanilla-calendar-date--active','vanilla-calendar-date--disabled')
             }
             
             newDayElem.appendChild(dateElem)
             opts.month.appendChild(newDayElem)
         }
 
-        
+  
         const removeActiveClass = function () {
             document.querySelectorAll('.vanilla-calendar-date--selected').forEach(s => {
                 s.classList.remove('vanilla-calendar-date--selected')
@@ -97,16 +114,22 @@ let VanillaCalendar = (function () {
         const selectDate = function () {
             let activeDates = element.querySelectorAll('[data-calendar-status=active]')
             activeDates.forEach(date => {
-                date.addEventListener('click', function () {
-                    removeActiveClass()
-                    let datas = this.dataset
-                    let data = {}
-                    if (datas.calendarDate)
-                        data.date = datas.calendarDate
-                    if (datas.calendarData)
-                        data.data = JSON.parse(datas.calendarData)
-                    opts.onSelect(data, this)
-                    this.classList.add('vanilla-calendar-date--selected')
+                date.addEventListener('click', function () 
+                {
+                    // alert((new Date(date.dataset.calendarDate)).getTime() < (opts.currentDate).getTime())
+                    // alert((new Date(date.dataset.calendarDate)).getTime() > (opts.currentDate).getTime())
+                    {
+                        console.log('issue')
+                        removeActiveClass()
+                        let datas = this.dataset
+                        let data = {}
+                        if (datas.calendarDate)
+                            data.date = datas.calendarDate
+                        if (datas.calendarData)
+                            data.data = JSON.parse(datas.calendarData)
+                        opts.onSelect(data, this)
+                        this.classList.add('vanilla-calendar-date--selected')
+                    }
                 })
             })
         }
@@ -114,6 +137,7 @@ let VanillaCalendar = (function () {
         const createMonth = function () {
             clearCalendar()
             let currentMonth = opts.date.getMonth()
+            // document.getElementById('impEventsMonth').innerHTML = 'June';
             while (opts.date.getMonth() === currentMonth) {
                 createDay(opts.date)
                 opts.date.setDate(opts.date.getDate() + 1)
@@ -127,6 +151,7 @@ let VanillaCalendar = (function () {
         
         const monthPrev = function () {
             opts.date.setMonth(opts.date.getMonth() - 1)
+            
             createMonth()
         }
         
