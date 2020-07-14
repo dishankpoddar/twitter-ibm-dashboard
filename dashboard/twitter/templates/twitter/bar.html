@@ -1,5 +1,6 @@
 {% extends "twitter/base.html" %}
-{% block content %}
+{% block content %}  
+
 <script>
   let pastDates = true, availableDates = false, availableWeekDays = true;
   let calendar = new VanillaCalendar({
@@ -152,37 +153,6 @@ options: {
       }
 }
 });
-
-</script>
-
-<script>
-alert();
-var date = Date();
-filters = {'date':date,'word':'lockdown','location':'Mumbai'}
-
-alert(filters.date+"\n"+filters.word+"\n"+filters.location);
-
-function form(input) {
-var ip = document.getElementById('input-word');
-ip.value = input;
-}
-function impDate(str) {
-var impDate = new Date(str);
-alert(impDate);
-
-}
-function changeDate(date) {
-alert(date);
-}
-function changeLoc(){
-alert("Hey");
-}
-function changeWord(){
-word = document.getElementById('input-word').value;
-alert(word);
-}
-</script>
-<script>
 
 </script>
 {% endblock content %}
