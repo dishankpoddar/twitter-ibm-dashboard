@@ -363,7 +363,7 @@ def pie(request):
         'date': filters_date,
         'loc': filters_loc,
         'content': filters_content,
-        'top_5': top_5,
+        'top_5': top_5, 
         'emotion': emotion,
         'max_color': max_color,
     }
@@ -376,10 +376,11 @@ def deleteTweets(request):
     return HttpResponse("This script is commented in order to avoid accidental deletes")
 
 def populateTweets(request):
-    
-    batch = Tweets.objects.last().batch+1
+    batch = 1
+    if(Tweets.objects.last()):
+        batch = Tweets.objects.last().batch+1
     # print(batch)
-    csvFile = 'twitter/tweets_annotated_lite.csv'
+    csvFile = 'twitter/tweets_0.csv'
     numberOfRows = 0
 
     with open(csvFile, encoding='utf8') as csvFile:
