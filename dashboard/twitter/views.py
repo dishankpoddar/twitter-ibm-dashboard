@@ -31,6 +31,7 @@ def word_count(my_string,stopwords):
     return counts
 
 filters_Global = {'date':date.today(),'loc':None,'content':None}
+filters_Default = {'date':date.today(),'loc':None,'content':None}
 
 def changeLocation(request):
     loc = request.GET.get('loc', None)
@@ -39,6 +40,7 @@ def changeLocation(request):
 
 def bar(request):
 
+    
     start = time.time()
     all_tweets = Tweets.objects.all()
     filter_date = date.today()
@@ -48,6 +50,10 @@ def bar(request):
           filters_Global['date']=request.POST['value']
         if(request.POST['variable']=='content'):
           filters_Global['content']=request.POST['value']
+        if(request.POST['variable']=='reset'):
+          filters_Global['date']=filters_Default['date']
+          filters_Global['content']=filters_Default['content']
+          filters_Global['loc']=filters_Default['loc']
     
     tweet_cloud = ""
     # for tweet in all_tweets:

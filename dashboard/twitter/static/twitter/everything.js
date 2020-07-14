@@ -34,6 +34,11 @@ function changeLoc(word){
     });      
 }
 
+function resetFeatures() {
+    document.getElementById('variable').value = 'reset';
+    document.theForm.submit();
+}
+
 function changeWord(){
     word = document.getElementById('input-word').value;
     document.getElementById('variable').value = 'content';
