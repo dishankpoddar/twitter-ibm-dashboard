@@ -77,7 +77,7 @@ def bar(request):
         # print(top)
     top_5 = {'terms':top_5,'positive':pos_top_5,'negative':neg_top_5}
 
-    print(top_5)
+    #print(top_5)
 
     given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
     filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
@@ -87,7 +87,7 @@ def bar(request):
     pos_neg_dates = []
     neg_perc = []
     pos_perc = []
-    for _ in range(4):
+    for _ in range(7):
         pos_neg_dates.append(pos_neg_filter_date.day)
         date_tweet = get_tweets.filter(date=pos_neg_filter_date)
         neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
@@ -101,7 +101,7 @@ def bar(request):
         pos_neg_filter_date -= timedelta(days=1)
         # print(pos_neg_days[i])
     pos_neg = {'dates':pos_neg_dates[::-1],'positive':pos_perc[::-1],'negative':neg_perc[::-1]}
-    print(pos_neg)
+    #print(pos_neg)
 
     emotion_filter_date = filter_date
     emotion_dates = []
@@ -119,7 +119,7 @@ def bar(request):
         emotion_filter_date -= timedelta(days=1)
         # print(emotion_days[i])
     emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
-    print(emotion)
+    #print(emotion)
 
     end = time.time()
 	
