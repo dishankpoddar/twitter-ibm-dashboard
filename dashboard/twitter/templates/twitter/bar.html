@@ -7,12 +7,12 @@
 const dataset_1_TendingTopics = [{
 label:'Positive Tweets',
 backgroundColor:'Orange',
-data:[50,60,70,30,40]
+data:{{top_5.positive}}
 },
 {
   label:'Negative Tweets',
   backgroundColor:'Red',
-  data:[100,100,100,100,100]
+  data:{{top_5.negative}}
 }
 ];
 
@@ -20,12 +20,12 @@ const dataset_2_PositiveNegative = [
 {
 label:'Negative Tweets',
 backgroundColor:'#9300ff',
-data:[80,70,90,80,70,90,80,70,90,80,70,90]
+data:{{pos_neg.negative}}
 },
 {
 label:'Positive Tweets',
 backgroundColor:'#40acff',
-data:[20,30,10,20,30,10,20,30,10,20,30,10]
+data:{{pos_neg.positive}}
 }
 ];
 
@@ -33,22 +33,22 @@ const dataset_3_Emotions = [
 {
 label:'Relief',
 backgroundColor:'#dbff34',
-data:[40,70,90,80]
+data:{{emotion.relief}}
 },
 {
 label:'Anxious',
 backgroundColor:'#d90ee7',
-data:[60,70,90,80]
+data:{{emotion.anxious}}
 },
 {
 label:'Happy',
 backgroundColor:'#00ff00',
-data:[80,70,90,80]
+data:{{emotion.happy}}
 },
 {
 label:'Sad',
 backgroundColor:'#f20002',
-data:[50,30,40,20]
+data:{{emotion.sad}}
 }
 ];
 //////// Do not touch after here //////////////////////////////
@@ -56,7 +56,8 @@ data:[50,30,40,20]
 const ticks = {fontColor:"white"};
 const legend = {display:true,position:'bottom',labels:{fontColor:'white'}};
 ///////////////GRAPH STARTS ///////////////////////////////////////////
-const labels_1 = ['Quarantine','Migrant','Final year','Exams','Hospital'];
+//const labels_1 = {{top_5.terms}};
+const labels_1 = ['case', 'day', 'delhi', 'india', 'people'];
 new Chart(document.getElementById("tending_topics_twitter"), {
 type: 'horizontalBar',
 data: {
@@ -85,7 +86,7 @@ scales: {
 new Chart(document.getElementById("positive-negative"), {
 type: 'bar',
 data: {
-  labels: [1,2,3,4,5,6,7,8,9,10,11,12],
+  labels: {{pos_neg.dates}},
   datasets: dataset_2_PositiveNegative
 },
 options: {
@@ -113,7 +114,7 @@ options: {
 new Chart(document.getElementById("emotions"), {
 type: 'bar',
 data: {
-  labels: [1,2,3,4],
+  labels: {{emotion.dates}},
   datasets: dataset_3_Emotions
 },
 options: {
