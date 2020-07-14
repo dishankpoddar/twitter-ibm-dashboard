@@ -48,19 +48,7 @@
       .svg-map {
         padding:1rem;
       }
-
       .outer-oval {
-        height:185px;
-        width: 90%;
-        border-radius:100%;
-        margin-left:5%;
-        margin-top: -1.5%;
-        align-items: center;
-        box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
-        border: 3px solid #40acff;
-
-      }
-      .outermost-oval {
         height:195px;
         width: 66%;
         border-radius:100%;
@@ -68,24 +56,17 @@
         margin-top:1.5rem;
         margin-bottom:1rem;
         align-items: center;
-        box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
-        border: 5px solid #40acff;
+        box-shadow: 0px 0px 20px rgba(33, 70, 219, 0.8);
+        border: 10px solid rgba(64, 172, 255, 0.5);
       }
       .inner-oval {
-        height:108px;
-        width:90%;
-        border-radius:100%;
-        margin-left:4%;
-        border: 2px solid #40acff;
-        box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
-        margin-top:-2%;
-      }
-      .inner-oval-first {
+        position: relative;;
         height:115px;
         width:70%;
+        top:-10px;
         border-radius:100%;
-        margin-left:16%;
-        border: 2px solid #40acff;
+        margin-left:15%;
+        border: 10px solid rgba(64, 172, 255, 0.5);
         box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
       }
       .imp-box {
@@ -221,14 +202,14 @@
               <div class="b-style-1" style="border-radius:10px">
                 <div class="inner-head"><h5>Important Dates</h5></div>
                 <div class="imp-dates">
-                  <div class="outermost-oval">
-                    <div class="outer-oval">
-                      <div class="inner-oval-first">
-                        <div class="inner-oval">
+                  <!--
+                  <div class="outer-ellipse">
+                    <div class="inner-ellipse"></div>
+                  </div>-->
+                  <div class="outer-oval">
+                      <div class="inner-oval">
                           <center><h2 style="margin-top:-0.75rem">  <span id="month" style="color:white">APR</span> </h2></center>
-                        </div>
                       </div>
-                    </div>
                   </div>
                   <div class="box-left imp-box" onclick="impDate('April 24, 2020')">
                     <p>Lockdown Announced  <span class="box-circle">24</span> </p>
