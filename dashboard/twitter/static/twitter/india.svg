@@ -162,12 +162,15 @@
 
 <script>
    <![CDATA[
-      
+
          var params = document.defaultView.frameElement.getElementsByTagName("param");
-         if(params[0].value!="None")
+         var state = params[0].value;
+         var color = params[1].value;
+         if(state!="None")
          {
-         var active = document.getElementById(params[0].value);
+         var active = document.getElementById(state);
          active.className.baseVal = "active";
+         active.style.fill=color;
          }
       var x = document.getElementsByTagName('path');
       for(var i = 0 ; i< x.length ; i++) 
@@ -176,16 +179,11 @@
          const id = currentDom.getAttribute('id');
          currentDom.addEventListener("click",() => 
             {
-               var y = document.getElementsByTagName('path');
-               for(var i = 0 ; i< y.length ; i++) 
+               if(currentDom.className.baseVal!='active')
                {
-                  const currentDom1 = y[i];
-                  if (currentDom1.className.baseVal!="active")
-                  currentDom1.className.baseVal="";
-                  console.log("currentDOM!");
+                  changeLoc(id);
+                  parent.document.theForm.submit();
                }
-               currentDom.className.baseVal="selected";
-               changeLoc(id);
             });
       }
       
