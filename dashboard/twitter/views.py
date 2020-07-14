@@ -105,7 +105,7 @@ def bar(request):
         'bar' : True,
         'wordcloud' :settings.MEDIA_ROOT+"/word.png"
     }
-    # return HttpResponse(f"Runtime of the query is {end - start}")
+    #return HttpResponse(f"Runtime of the query is {end - start}")
     return render(request, 'twitter/bar.html',context)
 
 def line(request):
