@@ -4,6 +4,7 @@
     GitHub: https://github.com/marssola/vanilla-calendar
     License: http://www.opensource.org/licenses/mit-license.php
 */
+
 let VanillaCalendar = (function () {
     function VanillaCalendar(options) {
         function addEvent(el, type, handler){
@@ -16,14 +17,16 @@ let VanillaCalendar = (function () {
             if (el.detachEvent) el.detachEvent('on' + type, handler)
             else el.removeEventListener(type, handler);
         }
+        today = new Date(document.getElementById('date').value);
+        // console.log(today.getDay());
         let opts = {
             selector: null,
             datesFilter: false,
             pastDates: true,
             availableWeekDays: [],
             availableDates: [],
-            date: new Date(),
-            todaysDate: new Date(),
+            date: new Date(document.getElementById('date').value),
+            todaysDate: new Date(document.getElementById('date').value),
             button_prev: null,
             button_next: null,
             month: null,
@@ -75,6 +78,7 @@ let VanillaCalendar = (function () {
                     newDayElem.setAttribute('data-calendar-status', 'active')
                 }
             }
+            
             if (date.toString() === opts.todaysDate.toString()) {
                 newDayElem.classList.add('vanilla-calendar-date--today')
             }
@@ -82,6 +86,7 @@ let VanillaCalendar = (function () {
             newDayElem.appendChild(dateElem)
             opts.month.appendChild(newDayElem)
         }
+
         
         const removeActiveClass = function () {
             document.querySelectorAll('.vanilla-calendar-date--selected').forEach(s => {

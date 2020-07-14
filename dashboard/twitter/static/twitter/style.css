@@ -4,11 +4,16 @@ path {
   fill:blue;
   cursor: pointer;
 }
-path:hover {
-  fill:#40acff;
-  fill-opacity:0.6;
+path:hover, path.selected {
+  fill:blue;
+  stroke:#ffffff;
+  fill-opacity:1;
 }
 #svg2 {
   box-shadow: 0px 0px 31px 0px rgba(33,70,219,1);
-
+}
+path.active {
+  fill:#40acff;
+  stroke:#ffffff;
+  fill-opacity:0.6;
 }

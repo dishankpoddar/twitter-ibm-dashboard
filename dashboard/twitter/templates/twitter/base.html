@@ -202,7 +202,10 @@
                 <div class="inner-head"><h5>Map Of India</h5></div>
                 <div class="svg-map">
                   <center>
-                    <object data="{% static 'twitter/india.svg' %}" height="500" style="width:100%" onclick="alert('click!')"></object>
+                    <object data="{% static 'twitter/india.svg' %}" height="500" style="width:100%" onclick="alert('click!')">
+                      <param name="title" value="{{loc}}" />
+                      <param name="label" value="stop" />
+                    </object>
                   </center>
 
                 </div>
@@ -229,8 +232,8 @@
                     <p>Lockdown  <span class="box-circle">24</span> </p>
 
                   </div>
-                  <div class="box-mid imp-box"  onclick="impDate('April 31, 2020')">
-                    <p>Extended  <span class="box-circle">31</span> </p>
+                  <div class="box-mid imp-box"  onclick="impDate('April 30, 2020')">
+                    <p>Extended  <span class="box-circle">30</span> </p>
                   </div>
 
                   <div class="box-right imp-box" onclick="impDate('April 15, 2020')">
