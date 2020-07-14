@@ -181,7 +181,7 @@
             {
                if(currentDom.className.baseVal!='active')
                {
-                  changeLoc(id);
+                  parent.document.getElementById('loc').value=id;
                   parent.document.theForm.submit();
                }
             });

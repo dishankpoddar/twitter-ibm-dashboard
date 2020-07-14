@@ -9,5 +9,4 @@ urlpatterns = [
     path('pie/', views.pie, name='pie'),
     path('load/',views.populateTweets),
     path('delete/',views.deleteTweets),
-    url(r'^ajax/$', views.changeLocation, name='ajax'),
 ]

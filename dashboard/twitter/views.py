@@ -30,29 +30,28 @@ def word_count(my_string,stopwords):
     counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
     return counts
 
-filters_Global = {'date':date.today(),'loc':None,'content':None}
 filters_Default = {'date':date.today(),'loc':None,'content':None}
-
-def changeLocation(request):
-    loc = request.GET.get('loc', None)
-    filters_Global['loc']=loc
-    return JsonResponse(None,safe=False)    
 
 def bar(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
-    filter_date = date.today()
-    if(request.method == 'POST'):
-        if(request.POST['variable']=='date'):
-          filters_Global['date']=request.POST['value']
-        if(request.POST['variable']=='content'):
-          filters_Global['content']=request.POST['value']
-        if(request.POST['variable']=='reset'):
-          filters_Global['date']=filters_Default['date']
-          filters_Global['content']=filters_Default['content']
-          filters_Global['loc']=filters_Default['loc']
-        
     
+    filters_date = date.today()
+    filters_content = filters_Default['content']
+    filters_loc = filters_Default['loc']
+    
+    if(request.method == 'POST'):
+        
+        if(request.POST['reset']=='false'):
+            filters_date = request.POST['date']
+            filters_content = request.POST['content']
+            filters_loc = request.POST['loc']
+        
+        elif(request.POST['reset']=='true'):
+            filters_date = filters_Default['date']
+            filters_content = filters_Default['content']
+            filters_loc = filters_Default['loc']
+        
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
@@ -127,9 +126,9 @@ def bar(request):
     context = {
         'bar' : True,
         'wordcloud' :settings.MEDIA_ROOT+"/word.png",
-        'date': filters_Global['date'],
-        'loc': filters_Global['loc'],
-        'content': filters_Global['content'],
+        'date': filters_date,
+        'loc': filters_loc,
+        'content': filters_content,
         'top_5': top_5,
         'pos_neg': pos_neg,
         'emotion': emotion

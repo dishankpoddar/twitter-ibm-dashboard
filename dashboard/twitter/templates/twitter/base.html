@@ -116,11 +116,10 @@
   <body>
     <form style="display:none" action = "" method = "POST" name="theForm"> 
       {% csrf_token %}  
-      <input  id="date" type="text" value="{{date}}" >
-      <input  id="loc" type="text" value="{{loc}}" >
-      <input  id="content" type="text" value="{{content}}" >
-      <input style="display:none" id="variable" type="text" name='variable' >
-      <input style="display:none" id="value" type="text" name='value' > 
+      <input  id="date" type="text" value="{{date}}" name="date">
+      <input  id="content" type="text" value="{{content}}" name="content">
+      <input  id="loc" type="text" value="{{loc}}" name="loc">
+      <input  id="reset" type="text" value="false" name="reset">
       <input type="submit" value="Submit"> 
       <input type="button" value="Reset" onclick="resetFeatures()"> 
     </form> 
