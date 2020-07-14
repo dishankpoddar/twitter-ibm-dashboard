@@ -88,7 +88,7 @@ def bar(request):
     pos_neg_dates = []
     neg_perc = []
     pos_perc = []
-    for _ in range(7):
+    for _ in range(4):
         pos_neg_dates.append(pos_neg_filter_date.day)
         date_tweet = get_tweets.filter(date=pos_neg_filter_date)
         neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
@@ -101,13 +101,13 @@ def bar(request):
             pos_perc.append(0)
         pos_neg_filter_date -= timedelta(days=1)
         # print(pos_neg_days[i])
-    pos_neg = {'dates':pos_neg_dates,'positive':pos_perc,'negative':neg_perc}
+    pos_neg = {'dates':pos_neg_dates[::-1],'positive':pos_perc[::-1],'negative':neg_perc[::-1]}
     print(pos_neg)
 
     emotion_filter_date = filter_date
     emotion_dates = []
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
-    for _ in range(7):
+    for _ in range(4):
         emotion_dates.append(emotion_filter_date.day)
         date_tweet = get_tweets.filter(date=emotion_filter_date)
         #neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
@@ -119,7 +119,7 @@ def bar(request):
         #pos_date_tweet = date_tweet.filter(Q(positive=True)).count()
         emotion_filter_date -= timedelta(days=1)
         # print(emotion_days[i])
-    emotion = {'dates':emotion_dates,'sad':sad_date_tweet,'anxious':anx_date_tweet,'relief':rel_date_tweet,'happy':hap_date_tweet}
+    emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
     print(emotion)
 
     end = time.time()

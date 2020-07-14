@@ -56,8 +56,12 @@ data:{{emotion.sad}}
 const ticks = {fontColor:"white"};
 const legend = {display:true,position:'bottom',labels:{fontColor:'white'}};
 ///////////////GRAPH STARTS ///////////////////////////////////////////
-//const labels_1 = {{top_5.terms}};
-const labels_1 = ['case', 'day', 'delhi', 'india', 'people'];
+let labels_1 = [];
+{% for term in top_5.terms %}
+ labels_1.push('{{term}}');
+{% endfor %}
+//const labels_1 = {{data|default:top_5.terms}};
+//const labels_1 = ['case', 'day', 'delhi', 'india', 'people'];
 new Chart(document.getElementById("tending_topics_twitter"), {
 type: 'horizontalBar',
 data: {
