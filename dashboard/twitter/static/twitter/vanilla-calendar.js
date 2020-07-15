@@ -52,7 +52,7 @@ let VanillaCalendar = (function () {
                     {
                         'month' : 'July',
                         'event1' : 'Extended ',
-                        'eventDate1' : '03',
+                        'eventDate1' : '08',
                         'event2' : 'Unlock 2 ',
                         'eventDate2' : '18',
                         'event3' : 'Extended ',

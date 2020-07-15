@@ -45,20 +45,24 @@ def bar(request):
     if(request.method == 'POST'):
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
+            try:
+                filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date() 
+            except:
+                filters_date = datetime.strptime(filters_date, "%B %d, %Y").date() 
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
             if(filters_content!="None"):
                 get_tweets = get_tweets.filter(tweet__contains=filters_content)
-            #if(filters_loc!="None"):
-            #   get_tweets = get_tweets.filter(geo=filters_loc)
+            if(filters_loc!="None"):
+              get_tweets = get_tweets.filter(geo=filters_loc)
 
 
-            print(filters_date,type(filters_content),filters_loc)
+            
         elif(request.POST['reset']=='true'):
             filters_date = filters_Default['date']
             filters_content = filters_Default['content']
             filters_loc = filters_Default['loc']
-        
+    print(get_tweets.filter(date=filters_date).count(),type(filters_content),filters_loc)
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
@@ -86,17 +90,17 @@ def bar(request):
 
     #print(top_5)
 
-    given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
-    filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
-    #print(get_tweets.filter(date=filter_date))
+    #given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
+    #filters_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
+    #print(get_tweets.filter(date=filters_date))
 
-    pos_neg_filter_date = filter_date
+    pos_neg_filters_date = filters_date
     pos_neg_dates = []
     neg_perc = []
     pos_perc = []
     for _ in range(7):
-        pos_neg_dates.append(pos_neg_filter_date.day)
-        date_tweet = get_tweets.filter(date=pos_neg_filter_date)
+        pos_neg_dates.append(pos_neg_filters_date.day)
+        date_tweet = get_tweets.filter(date=pos_neg_filters_date)
         neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
         pos_date_tweet = date_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
         try:
@@ -105,18 +109,18 @@ def bar(request):
         except:
             neg_perc.append(0)
             pos_perc.append(0)
-        pos_neg_filter_date -= timedelta(days=1)
+        pos_neg_filters_date -= timedelta(days=1)
         # print(pos_neg_days[i])
     pos_neg = {'dates':pos_neg_dates[::-1],'positive':pos_perc[::-1],'negative':neg_perc[::-1]}
     #print(pos_neg)
 
-    emotion_filter_date = filter_date
+    emotion_filters_date = filters_date
     emotion_dates = []
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
     flag = 0
     for _ in range(4):
-        emotion_dates.append(emotion_filter_date.day)
-        date_tweet = get_tweets.filter(date=emotion_filter_date)
+        emotion_dates.append(emotion_filters_date.day)
+        date_tweet = get_tweets.filter(date=emotion_filters_date)
         #neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
         sad_date_tweet.append(date_tweet.filter(Q(sad=True)).count())
         anx_date_tweet.append(date_tweet.filter(Q(anxious=True)).count())
@@ -134,7 +138,7 @@ def bar(request):
                 max_color = "yellow"
             if(max_c==hap_date_tweet[0]):
                 max_color = "green"
-        emotion_filter_date -= timedelta(days=1)
+        emotion_filters_date -= timedelta(days=1)
         # print(emotion_days[i])
     emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
     #print(emotion)
@@ -168,12 +172,13 @@ def line(request):
     if(request.method == 'POST'):
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
+            filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()  
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
             if(filters_content!="None"):
                 get_tweets = get_tweets.filter(tweet__contains=filters_content)
-            #if(filters_loc!="None"):
-            #   get_tweets = get_tweets.filter(geo=filters_loc)
+            if(filters_loc!="None"):
+              get_tweets = get_tweets.filter(geo=filters_loc)
 
 
             print(filters_date,type(filters_content),filters_loc)
@@ -209,17 +214,17 @@ def line(request):
 
     #print(top_5)
 
-    given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
-    filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
-    #print(get_tweets.filter(date=filter_date))
+    #given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
+    #filters_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
+    #print(get_tweets.filter(date=filters_date))
 
-    pos_neg_filter_date = filter_date
+    pos_neg_filters_date = filters_date
     pos_neg_dates = []
     neg_perc = []
     pos_perc = []
     for _ in range(7):
-        pos_neg_dates.append(pos_neg_filter_date.day)
-        date_tweet = get_tweets.filter(date=pos_neg_filter_date)
+        pos_neg_dates.append(pos_neg_filters_date.day)
+        date_tweet = get_tweets.filter(date=pos_neg_filters_date)
         neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
         pos_date_tweet = date_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count()
         try:
@@ -228,18 +233,18 @@ def line(request):
         except:
             neg_perc.append(0)
             pos_perc.append(0)
-        pos_neg_filter_date -= timedelta(days=1)
+        pos_neg_filters_date -= timedelta(days=1)
         # print(pos_neg_days[i])
     pos_neg = {'dates':pos_neg_dates[::-1],'positive':pos_perc[::-1],'negative':neg_perc[::-1]}
     #print(pos_neg)
 
-    emotion_filter_date = filter_date
+    emotion_filters_date = filters_date
     emotion_dates = []
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
     flag = 0
     for _ in range(4):
-        emotion_dates.append(emotion_filter_date.day)
-        date_tweet = get_tweets.filter(date=emotion_filter_date)
+        emotion_dates.append(emotion_filters_date.day)
+        date_tweet = get_tweets.filter(date=emotion_filters_date)
         #neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
         sad_date_tweet.append(date_tweet.filter(Q(sad=True)).count())
         anx_date_tweet.append(date_tweet.filter(Q(anxious=True)).count())
@@ -257,7 +262,7 @@ def line(request):
                 max_color = "yellow"
             if(max_c==hap_date_tweet[0]):
                 max_color = "green"
-        emotion_filter_date -= timedelta(days=1)
+        emotion_filters_date -= timedelta(days=1)
         # print(emotion_days[i])
     emotion = {'dates':emotion_dates[::-1],'sad':sad_date_tweet[::-1],'anxious':anx_date_tweet[::-1],'relief':rel_date_tweet[::-1],'happy':hap_date_tweet[::-1]}
     #print(emotion)
@@ -291,12 +296,13 @@ def pie(request):
     if(request.method == 'POST'):
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
+            filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()  
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
             if(filters_content!="None"):
                 get_tweets = get_tweets.filter(tweet__contains=filters_content)
-            #if(filters_loc!="None"):
-            #   get_tweets = get_tweets.filter(geo=filters_loc)
+            if(filters_loc!="None"):
+               get_tweets = get_tweets.filter(geo=filters_loc)
 
 
             print(filters_date,type(filters_content),filters_loc)
@@ -329,13 +335,13 @@ def pie(request):
 
     #print(top_5)
 
-    given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
-    filter_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
-    #print(get_tweets.filter(date=filter_date))
+    #given_date = "Fri Jun 12 2020 18:11:17 GMT+0530 (India Standard Time)"
+    #filters_date = datetime.strptime(given_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()      
+    #print(get_tweets.filter(date=filters_date))
 
-    emotion_filter_date = filter_date
+    emotion_filters_date = filters_date
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet,pos_date_tweet,neg_date_tweet=0,0,0,0,0,0
-    date_tweet = get_tweets.filter(date=emotion_filter_date)
+    date_tweet = get_tweets.filter(date=emotion_filters_date)
     neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
     sad_date_tweet = date_tweet.filter(Q(sad=True)).count()
     anx_date_tweet = date_tweet.filter(Q(anxious=True)).count()
