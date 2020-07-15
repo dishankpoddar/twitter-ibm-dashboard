@@ -36,7 +36,8 @@ def bar(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
     
-    filters_date = date.today()
+    #filters_date = date.today()
+    filters_date = datetime.strptime("July 14, 2020", "%B %d, %Y").date() 
     filters_content = filters_Default['content']
     filters_loc = filters_Default['loc']
 
@@ -162,7 +163,6 @@ def bar(request):
 def line(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
-    
     filters_date = date.today()
     filters_content = filters_Default['content']
     filters_loc = filters_Default['loc']
@@ -287,7 +287,8 @@ def pie(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
     
-    filters_date = date.today()
+    #filters_date = date.today()
+    filters_date = datetime.strptime("July 14, 2020", "%B %d, %Y").date() 
     filters_content = filters_Default['content']
     filters_loc = filters_Default['loc']
 
@@ -305,12 +306,12 @@ def pie(request):
                get_tweets = get_tweets.filter(geo=filters_loc)
 
 
-            print(filters_date,type(filters_content),filters_loc)
+            
         elif(request.POST['reset']=='true'):
             filters_date = filters_Default['date']
             filters_content = filters_Default['content']
             filters_loc = filters_Default['loc']
-        
+    print(filters_date,type(filters_content),filters_loc)    
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
