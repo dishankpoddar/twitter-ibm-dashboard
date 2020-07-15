@@ -75,5 +75,5 @@ wrapt==1.12.1
 yarl==1.4.2
 wordcloud==1.7.0     
 dj-static==0.0.6
-gunicorn==19.1.1
+gunicorn==19.5.0
 pip==20.1.1
