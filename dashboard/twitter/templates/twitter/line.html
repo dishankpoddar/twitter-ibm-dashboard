@@ -5,24 +5,29 @@
 
 ////// DATASETS ////////////////////
   const dataset_1_TendingTopics = [{
-    label:'Doctor',
+    label:'{{top_5.terms.0}}',
     borderColor:'Yellow',
-    data:[50,60,70,30,40,50,60,70,30,40]
+    data:{{top_5.count.0}}
     },
     {
-      label:'Migrant',
+      label:'{{top_5.terms.1}}',
       borderColor:'Pink',
-      data:[10,20,40,50,70,80,90,50,30,20]
+      data:{{top_5.count.1}}
     },
     {
-      label:'Exams',
+      label:'{{top_5.terms.2}}',
       borderColor:'Aqua',
-      data:[20,40,50,70,80,70,30,40,50,60]
+      data:{{top_5.count.2}}
     },
     {
-      label:'Covid-19',
+      label:'{{top_5.terms.3}}',
       borderColor:'Red',
-      data:[40,50,70,30,40,80,70,30,40,50]
+      data:{{top_5.count.3}}
+    },
+    {
+      label:'{{top_5.terms.4}}',
+      borderColor:'Green',
+      data:{{top_5.count.4}}
     }
 ];
 
@@ -30,12 +35,12 @@ const dataset_2_PositiveNegative = [
   {
     label:'Negative Tweets',
     borderColor:'#9300ff',
-    data:[500,1000,1200,1700,2400,2000,3000,5100,4500,3800,4700,5000]
+    data:{{pos_neg.negative}}
   },
   {
     label:'Positive Tweets',
     borderColor:'#40acff',
-    data:[500,2000,3000,5100,4500,3800,4700,5000,1200,1700,2400,2000]
+    data:{{pos_neg.positive}}
   }
 ];
 
@@ -43,25 +48,25 @@ const dataset_3_Emotions = [
   {
     label:'Relief',
     borderColor:'#dbff34',
-    data:[40,70,90,80,60,70,90,80],
+    data:{{emotion.relief}},
     pointRadius:0
   },
   {
     label:'Anxious',
     borderColor:'#d90ee7',
-    data:[60,70,90,80,60,70,90,80],
+    data:{{emotion.anxious}},
     pointRadius:0
   },
   {
     label:'Happy',
     borderColor:'#00ff00',
-    data:[80,70,90,80,70,90,80,60],
+    data:{{emotion.happy}},
     pointRadius:0
   },
   {
     label:'Sad',
     borderColor:'#f20002',
-    data:[50,30,40,20,70,90,80,60],
+    data:{{emotion.sad}},
     pointRadius:0
   }
 ];
@@ -70,7 +75,7 @@ const dataset_3_Emotions = [
   const ticks = {fontColor:"white"};
   const legend = {display:true,position:'bottom',labels:{fontColor:'white'}};
 ///////////////GRAPH STARTS ///////////////////////////////////////////
-  const labels_1 = [1,2,3,4,5,6,7,8,9,10];
+  const labels_1 = {{top_5.dates}};
   new Chart(document.getElementById("tending_topics_twitter"), {
   type: 'line',
   data: {
@@ -95,7 +100,7 @@ const dataset_3_Emotions = [
 new Chart(document.getElementById("positive-negative"), {
     type: 'line',
     data: {
-      labels: [1,2,3,4,5,6,7,8,9,10,11,12],
+      labels: {{pos_neg.dates}},
       datasets: dataset_2_PositiveNegative
     },
     options: {
@@ -119,7 +124,7 @@ new Chart(document.getElementById("positive-negative"), {
 new Chart(document.getElementById("emotions"), {
     type: 'line',
     data: {
-      labels: [1,2,3,4,5,6,7,8],
+      labels: {{emotion.dates}},
       datasets: dataset_3_Emotions
     },
     options: {

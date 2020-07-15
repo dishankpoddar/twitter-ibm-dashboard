@@ -35,7 +35,6 @@ filters_Default = {'date':date.today(),'loc':None,'content':None}
 def bar(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
-    
     #filters_date = date.today()
     filters_date = datetime.strptime("July 14, 2020", "%B %d, %Y").date() 
     filters_content = filters_Default['content']
@@ -172,7 +171,10 @@ def line(request):
     if(request.method == 'POST'):
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
-            filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()  
+            try:
+                filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date() 
+            except:
+                filters_date = datetime.strptime(filters_date, "%B %d, %Y").date()  
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
             if(filters_content!="None"):
@@ -202,15 +204,25 @@ def line(request):
     plt.tight_layout(pad = 0) 
     plt.savefig('./twitter/static/twitter/word.png')
 
+    
+    top_5_filters_date = filters_date
     top_5 = word_count(tweet_cloud,stopwords)[:5]
     top_5 = [top[0] for top in top_5]
-    neg_top_5,pos_top_5=[],[]
+    count_top_5 = []
+    top_5_dates = []
+    for _ in range(10):
+        top_5_dates.append(top_5_filters_date.day)
+        top_5_filters_date -= timedelta(days=1)
+
     for top in top_5:
-        top_tweet = get_tweets.filter(tweet__contains=top[0])
-        neg_top_5.append(top_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count())
-        pos_top_5.append(top_tweet.filter(Q(positive=True)|Q(happy=True)|Q(relief=True)).count())
+        top_tweet = []
+        top_5_filters_date = filters_date
+        for _ in range(10):
+            top_tweet.append(get_tweets.filter(Q(tweet__contains=top[0])|Q(date=top_5_filters_date)).count())
+            top_5_filters_date -= timedelta(days=1)
         # print(top)
-    top_5 = {'terms':top_5,'positive':pos_top_5,'negative':neg_top_5}
+        count_top_5.append(top_tweet[::-1])
+    top_5 = {'terms':top_5,'count':count_top_5,"dates":top_5_dates[::-1]}
 
     #print(top_5)
 
@@ -222,7 +234,7 @@ def line(request):
     pos_neg_dates = []
     neg_perc = []
     pos_perc = []
-    for _ in range(7):
+    for _ in range(14):
         pos_neg_dates.append(pos_neg_filters_date.day)
         date_tweet = get_tweets.filter(date=pos_neg_filters_date)
         neg_date_tweet = date_tweet.filter(Q(negative=True)|Q(sad=True)|Q(anxious=True)).count()
@@ -242,7 +254,7 @@ def line(request):
     emotion_dates = []
     sad_date_tweet,anx_date_tweet,rel_date_tweet,hap_date_tweet=[],[],[],[]
     flag = 0
-    for _ in range(4):
+    for _ in range(8):
         emotion_dates.append(emotion_filters_date.day)
         date_tweet = get_tweets.filter(date=emotion_filters_date)
         #neg_date_tweet = date_tweet.filter(Q(negative=True)).count()
@@ -297,7 +309,10 @@ def pie(request):
     if(request.method == 'POST'):
         if(request.POST['reset']=='false'):
             filters_date = request.POST['date']
-            filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date()  
+            try:
+                filters_date = datetime.strptime(filters_date[:33], "%a %b %d %Y %H:%M:%S %Z%z").date() 
+            except:
+                filters_date = datetime.strptime(filters_date, "%B %d, %Y").date() 
             filters_content = request.POST['content']
             filters_loc = request.POST['loc']
             if(filters_content!="None"):
