@@ -11,52 +11,52 @@ let VanillaCalendar = (function () {
                     '2' : 
                     {
                         'month' : 'March',
-                        'event1' : 'Holiday ',
-                        'eventDate1' : '19',
-                        'event2' : 'Lockdown ',
-                        'eventDate2' : '21',
-                        'event3' : 'Extended ',
-                        'eventDate3' : '30'
+                        'event1' : 'One Day Janta Curfew',
+                        'eventDate1' : '22',
+                        'event2' : 'Nationwide Lockdown Initiated',
+                        'eventDate2' : '24',
+                        'event3' : 'FM Announces 1.7trn Plan',
+                        'eventDate3' : '26'
                     },
                     '3' : 
                     {
                         'month' : 'April',
-                        'event1' : 'Extended ',
-                        'eventDate1' : '20',
-                        'event2' : 'Extended ',
-                        'eventDate2' : '30',
-                        'event3' : 'Extended ',
-                        'eventDate3' : '30'
+                        'event1' : 'Light a lamp initiative',
+                        'eventDate1' : '05',
+                        'event2' : 'Lockdown Extended',
+                        'eventDate2' : '15',
+                        'event3' : 'Small Shops Open up',
+                        'eventDate3' : '25'
                     },
                     '4' : 
                     {
                         'month' : 'May',
-                        'event1' : 'Extended ',
-                        'eventDate1' : '10',
-                        'event2' : 'Extended ',
-                        'eventDate2' : '20',
-                        'event3' : 'Extended ',
-                        'eventDate3' : '30'
+                        'event1' : 'Lockdown Extended',
+                        'eventDate1' : '01',
+                        'event2' : 'Lockdown Extended',
+                        'eventDate2' : '17',
+                        'event3' : '100,000 Confirm Cases',
+                        'eventDate3' : '19'
                     },
                     '5' : 
                     {
                         'month' : 'June',
-                        'event1' : 'Unlock 1',
-                        'eventDate1' : '02',
-                        'event2' : 'Unlock 2 ',
-                        'eventDate2' : '18',
-                        'event3' : 'Extended ',
-                        'eventDate3' : '30'
+                        'event1' : 'Unlock 1.0 Inititated',
+                        'eventDate1' : '08',
+                        'event2' : 'CBSE Cancels Board Exams',
+                        'eventDate2' : '25',
+                        'event3' : '500,00 Cases Crossed ',
+                        'eventDate3' : '27'
                     },
                     '6' : 
                     {
                         'month' : 'July',
-                        'event1' : 'Extended ',
-                        'eventDate1' : '08',
-                        'event2' : 'Unlock 2 ',
-                        'eventDate2' : '18',
-                        'event3' : 'Extended ',
-                        'eventDate3' : '30'
+                        'event1' : 'India Enters Unlock 2.0',
+                        'eventDate1' : '01',
+                        'event2' : '100 Days Since Lockdown Started',
+                        'eventDate2' : '02',
+                        'event3' : 'Monuments Opened',
+                        'eventDate3' : '06'
         
                     }
                 }

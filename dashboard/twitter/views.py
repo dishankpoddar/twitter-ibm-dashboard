@@ -35,8 +35,8 @@ filters_Default = {'date':date.today(),'loc':None,'content':None}
 def bar(request):
     start = time.time()
     get_tweets = Tweets.objects.all()
-    #filters_date = date.today()
-    filters_date = datetime.strptime("July 14, 2020", "%B %d, %Y").date() 
+    filters_date = date.today()
+    #filters_date = datetime.strptime("July 14, 2020", "%B %d, %Y").date() 
     filters_content = filters_Default['content']
     filters_loc = filters_Default['loc']
 
@@ -55,14 +55,14 @@ def bar(request):
                 get_tweets = get_tweets.filter(tweet__contains=filters_content)
             if(filters_loc!="None"):
               get_tweets = get_tweets.filter(geo=filters_loc)
-
-
             
         elif(request.POST['reset']=='true'):
             filters_date = filters_Default['date']
             filters_content = filters_Default['content']
             filters_loc = filters_Default['loc']
-    print(get_tweets.filter(date=filters_date).count(),type(filters_content),filters_loc)
+    
+    if get_tweets.count()==0:
+        get_tweets = Tweets.objects.all()
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
@@ -189,6 +189,8 @@ def line(request):
             filters_content = filters_Default['content']
             filters_loc = filters_Default['loc']
         
+    if get_tweets.count()==0:
+        get_tweets = Tweets.objects.all()
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
@@ -326,7 +328,10 @@ def pie(request):
             filters_date = filters_Default['date']
             filters_content = filters_Default['content']
             filters_loc = filters_Default['loc']
-    print(filters_date,type(filters_content),filters_loc)    
+    #print(filters_date,type(filters_content),filters_loc)    
+
+    if get_tweets.count()==0:
+        get_tweets = Tweets.objects.all()
     tweet_cloud = ""
     for tweet in get_tweets:
         tweet_cloud += " "+tweet.tweet
@@ -393,8 +398,8 @@ def pie(request):
     return render(request, 'twitter/pie.html',context)
 
 def deleteTweets(request):
-    # batch = Tweets.objects.last().batch
-    # Tweets.objects.filter(batch=batch).delete()
+    batch = Tweets.objects.last().batch
+    Tweets.objects.filter(batch=batch).delete()
     return HttpResponse("This script is commented in order to avoid accidental deletes")
 
 def populateTweets(request):
@@ -402,7 +407,7 @@ def populateTweets(request):
     if(Tweets.objects.last()):
         batch = Tweets.objects.last().batch+1
     # print(batch)
-    csvFile = 'twitter/tweets_0.csv'
+    csvFile = 'twitter/tweets_combined.csv'
     numberOfRows = 0
 
     with open(csvFile, encoding='utf8') as csvFile:

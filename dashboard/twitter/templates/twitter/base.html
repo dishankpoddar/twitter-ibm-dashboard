@@ -77,24 +77,42 @@
         color:white;
         text-align:center;
         max-width: 30%;
-        padding-top: 10px;
+        padding: 10px;
         box-shadow: 0px 1px 0px 0px #40acff;
         cursor:pointer;
+        position: absolute;
       }
       .box-circle {
         border: 2px solid #40acff;
-        padding:3px;
+        font-size: large;
+        padding: 5px;
         border-radius: 50%;
-        margin-top:3px;
+        margin:10px;
       }
       .box-left {
-        margin: -25% 0 6% 2%;
+        margin: -27% 0 6% 2%;
       }
       .box-mid {
-        margin: -3% 0 2% 35%
+        margin: -10% 0 2% 25%
       }
       .box-right {
-        margin: -35% 0 25% 68%;
+        margin: -28% 0 25% 50%;
+      }
+      .my-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        padding: 10px;
+        transition: .5s ease;
+        background-color: #010232;
+      }
+      .imp-box:hover .my-overlay {
+        opacity: 1;
       }
       .badge {
         cursor:pointer !important;
@@ -231,15 +249,16 @@
                       </div>
                   </div>
                   <div class="box-left imp-box" id="eventDiv1">
-                    <p><span id="event1"></span><span id="eventDate1" class="box-circle"></span></p>
-
+                    <span id="event1"></span>
+                    <div class="my-overlay"><p><span id="eventDate1" class="box-circle"></span></p></div>
                   </div>
-                  <div class="box-mid imp-box"  id="eventDiv3">
-                    <p><span id="event3"></span><span id="eventDate3" class="box-circle"></span></p>
+                  <div class="box-mid imp-box" id="eventDiv2">
+                    <span id="event2"></span>
+                    <div class="my-overlay"><p><span id="eventDate2" class="box-circle"></span></p></div>
                   </div>
-
-                  <div class="box-right imp-box" id="eventDiv2">
-                    <p><span id="event2"></span><span id="eventDate2" class="box-circle"></span></p>
+                  <div class="box-right imp-box" id="eventDiv3">
+                    <span id="event3"></span>
+                    <div class="my-overlay"><p><span id="eventDate3" class="box-circle"></span></p></div>
                   </div>
                 </div>
               </div>
@@ -277,7 +296,11 @@
                       <div class="form-group">
                         <div class="form-row">
                           <div class="col-10">
+                            {% if not content %}
+                            <input type="text" id="input-word" class="form-control" placeholder="Enter A Word">
+                            {% else %}
                             <input type="text" id="input-word" class="form-control" placeholder="Enter A Word" value="{{content}}">
+                            {% endif %}
                           </div>
                           <div class="col-2">
                             <button onclick="changeWord()" class="btn" style="background-color:transparent; color:white"> <i class="large material-icons">search</i> </button>
