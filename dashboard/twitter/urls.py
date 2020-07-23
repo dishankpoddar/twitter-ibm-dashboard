@@ -7,6 +7,6 @@ urlpatterns = [
     path('bar/', views.bar, name='bar'),
     path('line/', views.line, name='line'),
     path('pie/', views.pie, name='pie'),
-    path('load/',views.populateTweets),
+    path('load/',views.populateTweets3),
     path('delete/',views.deleteTweets),
 ]

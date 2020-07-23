@@ -410,32 +410,23 @@ def populateTweets(request):
     csvFile = 'twitter/tweets_combined.csv'
     numberOfRows = 0
 
+    my_list = []
     with open(csvFile, encoding='utf8') as csvFile:
         reader = csv.DictReader(csvFile)
         for row in reader:
             try :
                 numberOfRows+=1
-                p = Tweets(index = row['index'],
-                            batch = batch,
-                            date = row['date'],
-                            time = row['time'],
-                            username = row['username'],
-                            name = row['name'],
-                            tweet = row['tweet'],
-                            geo = row['geo'],
-                            positive = (True if row['Positive']=='1' else False),
-                            happy = (True if row['Happy']=='1' else False),
-                            relief = (True if row['Relief']=='1' else False),
-                            neutral = (True if row['Neutral']=='1' else False),
-                            anxious = (True if row['Anxious']=='1' else False),
-                            sad = (True if row['Sad']=='1' else False),
-                            negative = (True if row['Negative']=='1' else False))
-                p.save()
-
+                row['batch']=batch
+                my_list.append(row)
             except Exception as e:
                 pass
                 # print(e)
                 # log Error
+    result = [Tweets(**attrs) for attrs in my_list]
+    try:
+        Tweets.objects.bulk_create(result)
+    except Exception as e:
+        print(e)
     
     numberOfTweetsLoaded = Tweets.objects.filter(batch=batch).count()
 
